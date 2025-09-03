@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Results</title>
+</head>
+<body>
+  <h1>Admin Menu</h1>
+  <input type="password" id="pw" placeholder="Enter password">
+  <button onclick="loadData()">Login</button>
+  <div id="output"></div>
+
+  <script>
+    const PASSWORD = "teacher123"; // change this
+
+    async function loadData() {
+      const entered = document.getElementById("pw").value;
+      if (entered !== PASSWORD) {
+        alert("Wrong password");
+        return;
+      }
+
+      // CHANGE THIS to your Apps Script URL
+      const url = "YOUR_APPS_SCRIPT_URL_HERE";
+
+      const res = await fetch(url);
+      const data = await res.json();
+
+      let html = "<table border=1><tr>";
+      data[0].forEach(h => html += "<th>"+h+"</th>");
+      html += "</tr>";
+      for (let i=1;i<data.length;i++) {
+        html += "<tr>";
+        data[i].forEach(c => html += "<td>"+c+"</td>");
+        html += "</tr>";
+      }
+      html += "</table>";
+      document.getElementById("output").innerHTML = html;
+    }
+  </script>
+</body>
+</html>
