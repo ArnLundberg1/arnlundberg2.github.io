@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Test Quiz</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      margin: 0;
+      background: #f9fafb;
+      color: #111827;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem;
+    }
+    .quiz-container {
+      max-width: 700px;
+      width: 100%;
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h1 {
+      margin-bottom: 0.5rem;
+      color: #2563eb;
+    }
+    .timer {
+      font-weight: bold;
+      color: #dc2626;
+      margin-bottom: 1rem;
+    }
+    .question {
+      margin: 1rem 0;
+    }
+    button {
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    button:hover {
+      background: #1d4ed8;
+    }
+    .result {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h1>Sample Test</h1>
+    <div class="timer" id="timer">Time left: 05:00</div>
+    <form id="quizForm">
+      <div class="question">
+        <p>1. What is the capital of Sweden?</p>
+        <label><input type="radio" name="q1" value="Oslo"/> Oslo</label><br/>
+        <label><input type="radio" name="q1" value="Stockholm"/> Stockholm</label><br/>
+        <label><input type="radio" name="q1" value="Helsinki"/> Helsinki</label>
+      </div>
+
+      <div class="question">
+        <p>2. Which planet is known as the Red Planet?</p>
+        <label><input type="radio" name="q2" value="Mars"/> Mars</label><br/>
+        <label><input type="radio" name="q2" value="Jupiter"/> Jupiter</label><br/>
+        <label><input type="radio" name="q2" value="Venus"/> Venus</label>
+      </div>
+
+      <div class="question">
+        <p>3. Translate to English: "Skola"</p>
+        <label><input type="radio" name="q3" value="School"/> School</label><br/>
+        <label><input type="radio" name="q3" value="House"/> House</label><br/>
+        <label><input type="radio" name="q3" value="Book"/> Book</label>
+      </div>
+
+      <button type="submit">Submit</button>
+    </form>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    const quizForm = document.getElementById("quizForm");
+    const resultDiv = document.getElementById("result");
+    const timerDisplay = document.getElementById("timer");
+
+    // Timer (5 minutes)
+    let timeLeft = 300;
+    const timer = setInterval(() => {
+      timeLeft--;
+      const minutes = Math.floor(timeLeft / 60);
+      const seconds = timeLeft % 60;
+      timerDisplay.textContent = `Time left: ${minutes}:${seconds.toString().padStart(2,"0")}`;
+
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        submitQuiz();
+      }
+    }, 1000);
+
+    quizForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      submitQuiz();
+    });
+
+    function submitQuiz() {
+      clearInterval(timer);
+      let score = 0;
+      if (quizForm.q1.value === "Stockholm") score++;
+      if (quizForm.q2.value === "Mars") score++;
+      if (quizForm.q3.value === "School") score++;
+
+      resultDiv.textContent = `You scored ${score}/3`;
+      quizForm.querySelectorAll("input").forEach(i => i.disabled = true);
+    }
+  </script>
+</body>
+</html>
